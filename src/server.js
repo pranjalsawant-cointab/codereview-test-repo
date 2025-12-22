@@ -3,7 +3,7 @@ const app = express()
 
 app.use(express.json())
 
-let users = []
+// let users = []
 
 app.post("/user", (req, res) => {
   const user = req.body;
@@ -15,8 +15,12 @@ app.post("/user", (req, res) => {
 });
 
 app.get("/user/:id", (req, res) => {
-  const user = users[req.params.id]
-  res.json(user)
-})
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id) || id < 0 || id >= users.length) {
+    return res.status(404).send("User not found");
+  }
+  const user = users[id];
+  res.json(user);
+});
 
 app.listen(3000)
